@@ -6,42 +6,29 @@
 #include <map>
 using namespace std;
 
-
-template<typename K, typename V>
-class PrefixTree;
-
 template <class K, class V>
 class PrefixTree {
 public:
-    PrefixTree() = default; // + конструктор по умолчанию
-    PrefixTree(const PrefixTree& other); // + конструктор копирования
-
+    PrefixTree() = default; // конструктор по умолчанию
+    PrefixTree(const PrefixTree& other); // конструктор копирования
     void deleteTree(); // удаление всех значений из коллекции
-    int getValueCount() const; // + метод, возвращающий число хранящихся в коллекции значений
-
-    void saveTree(const string& path) const; // сохранение в файл содержимого коллекции
-    void loadTree(const string& path); // загрузка из файла содержимого коллекции
-
-    bool operator==(const PrefixTree& other) const;
-    bool operator!=(const PrefixTree& other) const;
-
-    template<typename Q, typename W> friend ostream& operator<<(ostream& stream, const PrefixTree<K, V>& prefixtree);
-    template<typename Q, typename W> friend istream& operator>>(istream& stream, PrefixTree<K, V>& prefixtree);
-
-    void addChild(const K& key, const V& value);
-    void deleteChild(const K& key);
-
-    V& operator[](const K& key);
-    const V& operator[](const K& key) const;
-
-    bool isKeyInTree(const K& key);
-    vector<K> getKeys() const; // + метод, возвращающий список хранящихся ключей, начинающихся с заданной последовательности
-
-    V& get(const K& key); // получить значение по ключу +
+    int getValueCount() const; // число хранящихся в коллекции значений
+    void saveTree(const string& path) const; // сохранение в файл
+    void loadTree(const string& path); // загрузка из файла
+    bool operator==(const PrefixTree& other) const; // перегрузка ==
+    bool operator!=(const PrefixTree& other) const; // перегрузка !=
+    template<class Q, class W> friend ostream& operator<<(ostream& stream, const PrefixTree<K, V>& prefixtree); // перегрузка << для записи в файл
+    template<class Q, class W> friend istream& operator>>(istream& stream, PrefixTree<K, V>& prefixtree); // перегрузка >> для записи в файл
+    void addChild(const K& key, const V& value); // добавление пары ключ-значение
+    void deleteChild(const K& key); // удаление ключа
+    V& operator[](const K& key); // перегрузка []
+    const V& operator[](const K& key) const; // перегрузка [] для константного дерева
+    bool isKeyInTree(const K& key); // проверка ключа в дереве
+    vector<K> getKeys() const; // список хранящихся ключей, начинающихся с заданной последовательности
+    V& get(const K& key); // получить значение по ключу
 
 private:
     map<char, PrefixTree> children;
-    vector<K> keys;
     V value;
     bool isChain = false; // является ли ключом
 };
@@ -164,7 +151,7 @@ V& PrefixTree<K, V>::get(const K& key) {
   return *result;
 }
 
-template<typename K, typename V>
+template<class K, class V>
 ostream& operator<<(ostream& stream, const PrefixTree<K, V>& prefixtree) {
     bool k = false;
     for (const auto& key : prefixtree.getKeys() ) {
@@ -178,7 +165,7 @@ ostream& operator<<(ostream& stream, const PrefixTree<K, V>& prefixtree) {
     return stream;
 }
 
-template<typename K, typename V>
+template<class K, class V>
 istream& operator>>(istream& stream, PrefixTree<K, V>& prefixtree) {
     string input_key, input_value;
     while (stream) {

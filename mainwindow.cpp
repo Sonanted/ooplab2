@@ -63,6 +63,9 @@ void MainWindow::on_loadButton_clicked() {
         tree.loadTree(filename.toStdString());
     }
     refreshTable();
+    if (tree.getValueCount() != 0) {
+        ui->saveButton->setEnabled(true);
+    }
 }
 
 void MainWindow::refreshTable() {
